@@ -7,10 +7,7 @@ import ToDoList from "./components/ToDoList";
 class App extends Component {
   /* Set up state and items array with property */
   state = {
-    items: [
-      { id: 1, title: "wake up" },
-      { id: 2, title: "brush teeth" },
-    ],
+    items: [],
     id: uuidv4(),
     /* Set item & editItem in the state */
     item: "",
@@ -21,16 +18,42 @@ class App extends Component {
   // - Pass in the event to handleChange
   */
   handleChange = (e) => {
-    console.log("handle Change");
+    this.setState({
+      item: e.target.value,
+    });
   };
   /* handleSubmit 
 // -Pass in event and  will be used every time we submit a form
+// - Everytime something is typed in toDo, this will be updated within the state
+ // - state.item gives us an intial value and keeps track of what we ar going to update
 */
   handleSubmit = (e) => {
-    console.log("handle Submit");
+    e.preventDefault();
+    const newItem = {
+      id: this.state.id,
+      title: this.state.item,
+    };
+    const updatedItems = [...this.state.items, newItem];
+
+    this.setState(
+      {
+        items: updatedItems,
+        item: "",
+        id: uuidv4(),
+        editItem: false,
+      },
+      () => console.log(this.state)
+    );
   };
   /*  clearList
 // - Used to clear the toDoList, no event required
+// - preventDefault is used to prevent browser being refreshed when using submit button
+// - Collect item id and item in the state
+// - Update newItem when submitted using updatedItems
+// - Using this.setState() replace previous array with newly constructed array.
+// - Set item to empty string
+// - set id to random uuid
+ // - Set editItem back to false
 */
   clearList = () => {
     console.log("clear To Do List");
