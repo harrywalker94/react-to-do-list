@@ -30,7 +30,9 @@ export default class ToDoInput extends Component {
             */}
           <button
             type="submit"
-            disabled={item ? false : true}
+            disabled={
+              item ? false : true
+            } /* To prevent adding empty toDoItem */
             className={
               editItem
                 ? "btn btn-block btn-warning mt-3 text-uppercase"
