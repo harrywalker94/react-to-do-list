@@ -5,28 +5,17 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import ToDoInput from "./components/ToDoInput";
 import ToDoList from "./components/ToDoList";
 class App extends Component {
-  /* Set up state and items array with property */
   state = {
     items: [],
     id: uuidv4(),
-    /* Set item & editItem in the state */
     item: "",
     editItem: false,
   };
-  /* Set Methods */
-  /* handleChange 
-  // - Pass in the event to handleChange
-  */
   handleChange = (e) => {
     this.setState({
       item: e.target.value,
     });
   };
-  /* handleSubmit 
-// -Pass in event and  will be used every time we submit a form
-// - Everytime something is typed in toDo, this will be updated within the state
- // - state.item gives us an intial value and keeps track of what we ar going to update
-*/
   handleSubmit = (e) => {
     e.preventDefault();
     const newItem = {
@@ -35,60 +24,66 @@ class App extends Component {
     };
     const updatedItems = [...this.state.items, newItem];
 
-    this.setState(
-      {
-        items: updatedItems,
-        item: "",
-        id: uuidv4(),
-        editItem: false,
-      },
-      () => console.log(this.state)
-    );
+    this.setState({
+      items: updatedItems,
+      item: "",
+      id: uuidv4(),
+      editItem: false,
+    });
   };
-  /*  clearList
-// - Used to clear the toDoList, no event required
-// - preventDefault is used to prevent browser being refreshed when using submit button
-// - Collect item id and item in the state
-// - Update newItem when submitted using updatedItems
-// - Using this.setState() replace previous array with newly constructed array.
-// - Set item to empty string
-// - set id to random uuid
- // - Set editItem back to false
-*/
   clearList = () => {
-    console.log("clear To Do List");
+    this.setState({
+      items: [],
+    });
   };
-  /*  handleDelete
-// - Used to delete items
-// - Passes in id in template literals
-*/
+
+  /* - Use filter method, to display items that don't have id
+        - pass in callback function into the filter method, does the id have the same id I am passing down?
+      if not, the id will be returned into the array to filter the list */
   handleDelete = (id) => {
-    console.log(`handle edit ${id}`);
+    const filteredItems = this.state.items.filter((item) => item.id !== id);
+    this.setState({
+      items: filteredItems,
+    });
   };
-  /*  handleEdit
-// - Used to edit deleted items
-// - Passes in id in template literals
-*/
-  editItem = (id) => {
-    console.log(`edit edit ${id}`);
+  handleEdit = (id) => {
+    const filteredItems = this.state.items.filter((item) => item.id !== id);
+    const selectedItem = this.state.items.find((item) => item.id === id);
+    /* 
+    - Like handleDelete, set filteredItems array to any items that DO NOT have the id
+    - Get selected Item that would be selected with editMethod
+    - Using find() method to choose a single item, if the item DOES (===) match parameter of the id
+    - Set items to filteredItems array
+    - Set item to the selectedItem Title
+    - Pass in the id to id
+    - Set editItem to true
+    */
+    this.setState({
+      items: filteredItems,
+      item: selectedItem.title,
+      id: id,
+      editItem: true,
+    });
   };
   render() {
     return (
       <div className="container">
         <div className="row">
           <div className="col-10 mx-auto col-md-8 mt-5">
-            <h3 className="text-capitalize text-center">todo input</h3>
-            {/* Set up props from the state within the components */}
+            <h3 className="text-capitalize text-center">
+              Shopping <i class="fas fa-shopping-basket"></i>
+            </h3>
             <ToDoInput
               item={this.state.item}
               handleChange={this.handleChange}
               handleSubmit={this.handleSubmit}
-              editItem={this.editItem}
+              editItem={this.state.editItem}
             />
             <ToDoList
               items={this.state.items}
-              clearList={this.state.clearList}
-              handleDelete={this.state.handleDelete}
+              clearList={this.clearList}
+              handleDelete={this.handleDelete}
+              handleEdit={this.handleEdit}
             />
           </div>
         </div>

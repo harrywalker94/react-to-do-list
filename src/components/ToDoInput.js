@@ -24,11 +24,24 @@ export default class ToDoInput extends Component {
               onChange={handleChange}
             />
           </div>
+          {/* 
+            - If the edit item is set to true, then change classes(bg-warning) to bg-warning
+            - If value is set to false, change classes (bg-info)
+            */}
           <button
             type="submit"
-            className="btn btn-block btn-info mt-3 text-uppercase"
+            disabled={item ? false : true}
+            className={
+              editItem
+                ? "btn btn-block btn-warning mt-3 text-uppercase"
+                : "btn btn-block btn-info mt-3 text-uppercase"
+            }
           >
-            Add Item
+            {/* Using conditional rendering
+           -  Ternary operator, If the edit item is set to true, then get the 
+            the value of the edit item
+           - If false, add item */}
+            {editItem ? "edit item" : "add item"}
           </button>
         </form>
       </div>
