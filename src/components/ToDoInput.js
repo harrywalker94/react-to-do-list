@@ -19,7 +19,7 @@ export default class ToDoInput extends Component {
             <input
               type="text"
               className="form-control text-capitalize"
-              placeholder="Add To Do Item"
+              placeholder="Add Shopping Item"
               value={item}
               onChange={handleChange}
             />
